@@ -1,6 +1,6 @@
 #the method is the beginning of the app
-require_relative './choserole.rb'
-require_relative './choseaffiliation.rb'
+require_relative './lib/rwanda/smith/cli/project/choserole.rb'
+#require_relative './choseaffiliation.rb'
 require_relative './userprofile.rb'
 require_relative './WebsiteScraper.rb'
 
@@ -8,8 +8,8 @@ class StartApp
     def initialize
         puts "Greetings\! Welcome to \'Find Your First Hero\'.\nSo, you just bought Overwatch and aren\'t sure which hero to choose for your first match.\nNo problem.\nThis app is designed to help narrow down the myriad of choices Overwatch offers.\n"
         UserProfiles.new
-        @@cr = ChoseRole.new
-        ChoseAffiliation.new
+        ChoseRole.new
+        #ChoseAffiliation.new
         WebsiteScraper.new
         self.class.mainmenu
     end
@@ -20,9 +20,10 @@ class StartApp
         uimostimportant = gets.chomp #user input most imporant detail
         uimostimportant.upcase! #make the case uppercase incase the user uses lower case letters
         if uimostimportant == "R"
-            @@cr.start
+            ChoseRole.start("R")
         elsif uimostimportant  == "A"
-            ChoseAffiliation.start(WebsiteScraper)
+           # ChoseAffiliation.start(WebsiteScraper)
+           ChooseRole.start("A")
         elsif uimostimportant  == "H"
             self.helpmenu
         else

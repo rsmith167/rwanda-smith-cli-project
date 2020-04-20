@@ -1,13 +1,16 @@
 require_relative './choseaffiliation.rb'
 require_relative './userprofile.rb'
 require_relative './WebsiteScraper.rb'
-#require_relative './startapp.rb'
 
 class ChoseRole
-    def start
-        @ws = WebsiteScraper
-        puts "The roles are #{@ws.roles_list}"
-        puts "Press    #{@ws.roles_list[0][0]} - #{@ws.roles_list[0]}    #{@ws.roles_list[1][0]} - #{@ws.roles_list[1]}    #{@ws.roles_list[2][0]} - #{@ws.roles_list[2]}   
+    def self.start(role_or_aff)
+        if role_or_aff == "R"
+           @@first_choice == "role"
+        elsif role_or_aff == "A"
+            @@first_choice == "affiliation"
+        end
+        puts "The #{first_choice}s are #{WebsiteScraper.role_or_aff_list(first_choice)}"
+        puts "Press    #{WebsiteScraper.roles_list[0][0]} - #{WebsiteScraper.roles_list[0]}    #{WebsiteScraper.roles_list[1][0]} - #{WebsiteScraper.roles_list[1]}    #{WebsiteScraper.roles_list[2][0]} - #{WebsiteScraper.roles_list[2]}   
         \n\t\tM - Main Menu    H - Help"
         uichoseroles = ""
         uichoseroles = gets.chomp
@@ -30,8 +33,8 @@ class ChoseRole
     def choosebasedonrole(role)
         role = role
         heroes1 = []
-         @ws.all_hero_names.each {|x| 
-                    if @ws.all_heroes[x]["role"] == role
+         WebsiteScraper.all_hero_names.each {|x| 
+                    if WebsiteScraper.all_heroes[x]["role"] == role
                     heroes1 << x
                     end}
         puts "The #{role} heroes are #{heroes1}"
@@ -56,7 +59,7 @@ class ChoseRole
         puts "Press #{index+1} to read more about #{hero_name}"}
         uiselecthero = 0
         uiselecthero = gets.to_i
-        puts "#{@ws.all_heroes[hero_index[uiselecthero-1]]["description"]}"
+        puts "#{WebsiteScraper.all_heroes[hero_index[uiselecthero-1]]["description"]}"
         puts "S - Save this hero to your list    B - Back to previous screen"
         uiafterselect = ""
         uiafterselect = gets.chomp
