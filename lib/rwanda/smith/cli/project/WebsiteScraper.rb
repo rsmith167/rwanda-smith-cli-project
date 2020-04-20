@@ -48,12 +48,6 @@ class WebsiteScraper
         def self.affiliation_clean
             @@all_affiliation_types = @@all_affiliation_types.collect {|x| x}.uniq            
         end
-        # def self.roles_list
-        #     @@all_role_types
-        # end
-        # def self.affiliation_list
-        #     @@all_affiliation_types
-        #end
         def self.role_or_aff_list(role_or_aff)
            if role_or_aff == "role" 
                 @@all_role_types
@@ -67,7 +61,7 @@ class WebsiteScraper
         def self.all_hero_names
             @@all_hero_names
         end
-        def self.list_heroes_by_role(role_or_aff)
+        def self.list_heroes_by(role_or_aff)
            list_hero_array = []
            if self.roles_list.include?(role_or_aff)
                 self.all_hero_names.each {|x| 

@@ -25,37 +25,36 @@ class ChoseRole
         elsif ("A".."Z").include?(uichoseroles)
             puts "This is not a valid option"
             self.StartApp(@@first_choice)
-        elsif first_choice == "role"
-            choosebasedonrole(role_or_aff_list[uichoserole.to_i - 1])
-        elsif first_choice == "affiliation"
-            choosebasedonaffiliation(role_or_aff_list[uichoserole.to_i - 1])
+        elsif @@first_choice == "role" || "affiliation"
+            choosebasedon(role_or_aff_list[uichoserole.to_i - 1])
         end
     end
-    def choosebasedonrole(role)
-        role = role
-        heroes1 = []
-         WebsiteScraper.all_hero_names.each {|x| 
-                    if WebsiteScraper.all_heroes[x]["role"] == role
-                    heroes1 << x
-                    end}
-        puts "The #{role} heroes are #{heroes1}"
-        puts "1 - Select one of these heroes 2 - Narrow down by affiliation 3 - Main Menu"
+    def choosebasedon(role_or_aff)
+        role_or_aff = role_or_aff
+        list = []
+        list = WebsiteScraper.list_heroes_by(role_or_aff)
+        list
+        puts "1 - Select one of these heroes 2 - Narrow down by affiliation" if WebsiteScraper.role_or_aff_list("role").include?(role_or_aff)
+        puts "1 - Select one of these heroes 2 - Narrow down by role" if WebsiteScraper.role_or_aff_list("affiliation").include?(role_or_aff)
         uichoserole = ""
-        uichoserole = gets.to_i
-        if uichoserole  == 1
-            select_hero(heroes1, role)
-        elsif uichoserole == 2 
-            narrow_hero(heroes1, role)
-        elsif uichoserole == 3
+        uichoserole = gets.chomp
+        uichoserole.upcase!
+        if uichoserole == "M"
             StartApp.mainmenu
-        else
-            puts "Not a valid option"
-            choosebasedonrole(role)
+        elsif uichoserole == "H"
+            StartApp.helpmenu
+        elsif ("A".."Z").include?(uichoserole)
+            puts "This is not a valid option"
+            self.choosebasedon(role_or_aff)
+        elsif uichoserole.to_i == 1
+            select_hero(list, role_or_aff)
+        elsif uichoserole.to_i == 2 
+            narrow_hero(list, role_or_aff)
         end
     end
-    def select_hero(hero_by_role,role)
+    def select_hero(list,role_or_aff)
         hero_index = {}
-        hero_by_role.each_with_index {|hero_name, index|
+        hero_by_role_or_aff.each_with_index {|hero_name, index|
         hero_index[index] = hero_name
         puts "Press #{index+1} to read more about #{hero_name}"}
         uiselecthero = 0
