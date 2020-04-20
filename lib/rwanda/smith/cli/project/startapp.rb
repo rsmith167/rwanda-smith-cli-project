@@ -1,16 +1,15 @@
 #the method is the beginning of the app
-require_relative './lib/rwanda/smith/cli/project/choserole.rb'
-#require_relative './choseaffiliation.rb'
+require_relative './choserole.rb'
 require_relative './userprofile.rb'
 require_relative './WebsiteScraper.rb'
-
+#ruby lib/rwanda/smith/cli/project/startapp.rb
 class StartApp
     def initialize
         puts "Greetings\! Welcome to \'Find Your First Hero\'.\nSo, you just bought Overwatch and aren\'t sure which hero to choose for your first match.\nNo problem.\nThis app is designed to help narrow down the myriad of choices Overwatch offers.\n"
         UserProfiles.new
         ChoseRole.new
-        #ChoseAffiliation.new
-        WebsiteScraper.new
+        puts "Loading data...Please wait 30 seconds"
+        WebsiteScraper.new        
         self.class.mainmenu
     end
     def self.mainmenu
@@ -22,8 +21,7 @@ class StartApp
         if uimostimportant == "R"
             ChoseRole.start("R")
         elsif uimostimportant  == "A"
-           # ChoseAffiliation.start(WebsiteScraper)
-           ChooseRole.start("A")
+            ChoseRole.start("A")
         elsif uimostimportant  == "H"
             self.helpmenu
         else
@@ -38,10 +36,11 @@ class StartApp
         uineedshelp = ""
         uineedshelp = gets.to_i
         if uineedshelp == 1
-            puts "The roles are: #{WebsiteScraper.roles_list}\n\n\n"
+            puts "The roles are: #{WebsiteScraper.role_or_aff_list("role")}\n\n\n"
             self.helpmenu
         elsif uineedshelp  == 2
-            puts "The Affiliations are #{WebsiteScraper.affiliations.clean}\n\n\n"
+            puts "The Affiliations are "
+            WebsiteScraper.role_or_aff_list("affiliation").each {|x| puts "#{x}\t\t"}
             self.helpmenu
         elsif uineedshelp == 3
            self.mainmenu

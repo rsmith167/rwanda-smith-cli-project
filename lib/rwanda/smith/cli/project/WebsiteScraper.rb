@@ -49,7 +49,7 @@ class WebsiteScraper
             @@all_affiliation_types = @@all_affiliation_types.collect {|x| x}.uniq            
         end
         def self.role_or_aff_list(role_or_aff)
-           if role_or_aff == "role" 
+             if role_or_aff == "role" 
                 @@all_role_types
             elsif role_or_aff == "affiliation"
                 @@all_affiliation_types
@@ -63,18 +63,30 @@ class WebsiteScraper
         end
         def self.list_heroes_by(role_or_aff)
            list_hero_array = []
-           if self.roles_list.include?(role_or_aff)
+           if self.role_or_aff_list("role").include?(role_or_aff)
                 self.all_hero_names.each {|x| 
                 if self.all_heroes[x]["role"] == role_or_aff
                     list_hero_array << x
                 end}
-            elsif self.affiliation_list.include?(role_or_aff)
+            elsif self.role_or_aff_list("affiliation").include?(role_or_aff)
                 self.all_hero_names.each {|x| 
                     if self.all_heroes[x]["affiliation"] == role_or_aff
                         list_hero_array << x
                     end}
                 end
             list_hero_array
+        end
+        def self.narrow_heroes_by( hero_list, role_or_aff)
+            hero_narrow = []
+            self.all_hero_names.each {
+                |hero_name|
+                if hero_list.include?(hero_name) && self.role_or_aff_list("role").include?(role_or_aff)
+                    hero_narrow << self.all_heroes[hero_name]["affiliation"]
+                elsif hero_list.include?(hero_name) && self.role_or_aff_list("affiliation").include?(role_or_aff)
+                    hero_narrow << self.all_heroes[hero_name]["role"]
+                end
+            }
+            return hero_narrow
         end
 
 end
