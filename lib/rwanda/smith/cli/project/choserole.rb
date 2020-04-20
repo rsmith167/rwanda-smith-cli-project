@@ -9,25 +9,26 @@ class ChoseRole
         elsif role_or_aff == "A"
             @@first_choice == "affiliation"
         end
+        role_or_aff_list = {}
         puts "The #{first_choice}s are #{WebsiteScraper.role_or_aff_list(first_choice)}"
-        puts "Press    #{WebsiteScraper.roles_list[0][0]} - #{WebsiteScraper.roles_list[0]}    #{WebsiteScraper.roles_list[1][0]} - #{WebsiteScraper.roles_list[1]}    #{WebsiteScraper.roles_list[2][0]} - #{WebsiteScraper.roles_list[2]}   
-        \n\t\tM - Main Menu    H - Help"
+        WebsiteScraper.role_or_aff_list(first_choice).each_with_index {
+            role_or_aff_list[i] = v
+            |v,i| puts "Press #{i + 1} for #{v}"
+        }
         uichoseroles = ""
         uichoseroles = gets.chomp
         uichoseroles.upcase!
-        if uichoseroles  == "T"
-            choosebasedonrole("Tank")  
-        elsif uichoseroles  == "D"
-            choosebasedonrole("Damage")  
-        elsif uichoseroles  == "S"
-            choosebasedonrole("Support")  
-        elsif uichoseroles == "M"
+        if uichoseroles == "M"
             StartApp.mainmenu
-        elsif uichoseroles  == "H"
+        elsif uichoseroles == "H"
             StartApp.helpmenu
-        else
-            puts "\nThis is not a valid option"
-            start
+        elsif ("A".."Z").include?(uichoseroles)
+            puts "This is not a valid option"
+            self.StartApp(@@first_choice)
+        elsif first_choice == "role"
+            choosebasedonrole(role_or_aff_list[uichoserole.to_i - 1])
+        elsif first_choice == "affiliation"
+            choosebasedonaffiliation(role_or_aff_list[uichoserole.to_i - 1])
         end
     end
     def choosebasedonrole(role)
