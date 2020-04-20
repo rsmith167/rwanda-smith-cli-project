@@ -92,25 +92,27 @@ class ChoseRole
     def self.narrow_hero(hero_list, role_or_aff)
         hero_narrow = []
         hero_narrow = WebsiteScraper.narrow_heroes_by(hero_list, role_or_aff)        
-        puts "These are all the #{role_or_aff} heroes"
+        puts "These are all the \'#{role_or_aff}\' heroes"
         puts " roles" if WebsiteScraper.role_or_aff_list("affiliation").include?(role_or_aff)
-        puts " affiliation" if WebsiteScraper.role_or_aff_list("role").include?(role_or_aff)
-        puts "Press the corresponding number for your choice of"
+        puts " affiliations" if WebsiteScraper.role_or_aff_list("role").include?(role_or_aff)
+        puts "Press the select corresponding number for your choice of"
         puts " roles" if WebsiteScraper.role_or_aff_list("affiliation").include?(role_or_aff)
-        puts " affiliation" if WebsiteScraper.role_or_aff_list("role").include?(role_or_aff)
+        puts " affiliations" if WebsiteScraper.role_or_aff_list("role").include?(role_or_aff)
         hero_narrow.each_with_index {|v,i| puts "#{i+1}. #{v}"}
+        narrowchoice = []
         uinarrow = 0
         uinarrow = gets.to_i
-        narrowchoice = ""
         narrowchoice = hero_narrow[uinarrow-1]
         narrowchoicearray = []
         WebsiteScraper.all_hero_names.each {
             |hero_name|
             if hero_list.include?(hero_name) &&  (WebsiteScraper.all_heroes[hero_name]["affiliation"] == narrowchoice)
             narrowchoicearray << hero_name
+            elsif hero_list.include?(hero_name) &&  (WebsiteScraper.all_heroes[hero_name]["role"] == narrowchoice)
+            narrowchoicearray << hero_name
             end
         }
-        puts "These are the #{role} heroes with #{narrowchoice}"
+        puts "These are the #{role_or_aff} heroes with #{narrowchoice}"
         list_select = {}
         narrowchoicearray.each_with_index {|v,i|
             list_select[i] = v
