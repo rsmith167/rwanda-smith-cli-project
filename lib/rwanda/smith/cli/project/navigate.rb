@@ -1,9 +1,8 @@
 
 require_relative './userprofile.rb'
-#require_relative './startapp.rb'
 require_relative './WebsiteScraper.rb'
 
-class ChoseRole
+class Navigate
     
     @@first_choice = ""
     
@@ -77,16 +76,21 @@ class ChoseRole
         end
     end
     def self.save_hero(choice)
-        choice = choice
-        UserProfiles.all_users[0].save_a_hero(choice)
-        puts "Go to Main Menu (press M)   Veiw you list of heroes (press V)"
+        user = StartApp.current_user
+        y = UserProfiles.all_users.index(user)
+        current_profile = UserProfiles.all_users[y]
+        current_profile.save_a_hero(choice)
+        puts "M - Main Menu    V - View Your Heroes"
         uisavehero = ""
         uisavehero = gets.chomp
         uisavehero.upcase!
         if uisavehero == "M"
             StartApp.mainmenu
         elsif uisavehero == "V"
-            UserProfiles.all_users[0].view_your_list
+            current_profile.view_your_list
+        else 
+            Puts "Not a valid choice."
+            self.save_hero(choice, user)
         end        
     end
     def self.narrow_hero(hero_list, role_or_aff)
