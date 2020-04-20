@@ -4,13 +4,19 @@ require_relative './userprofile.rb'
 require_relative './WebsiteScraper.rb'
 
 class StartApp
-    attr_reader :current_user
+    @@current_user = ""
+    def self.current_user=(current_user)
+        @@current_user = current_user
+    end
+    def self.current_user
+        @@current_user
+    end
     def initialize
         puts "Greetings\! Welcome to \'Find Your First Hero\'.\nSo, you just bought Overwatch and aren\'t sure which hero to choose for your first match.\nNo problem.\nThis app is designed to help narrow down the myriad of choices Overwatch offers.\n"
         Navigate.new
         puts "Loading data...Please wait 30 seconds"
-        WebsiteScraper.new  
-        self.create_account
+        #WebsiteScraper.new  
+        self.class.create_account
     end
     def self.create_account
         puts "What is your name?"
@@ -23,15 +29,14 @@ class StartApp
             if answer.to_i == 1
                 self.create_account
             elsif UserProfiles.all_users.include?(answer)
-                @current_user = answer
+                self.current_user = answer
                 self.mainmenu
             else
                 puts "What you typed in is still invalid. Please try again. Your name is not case sensitive, but it must be spelled correctly"
                 self.create_account
             end
         else
-            UserProfiles.new(your_name)
-            @current_user = your_name
+           your_name = UserProfiles.new(your_name)
            self.mainmenu
         end
     end
@@ -49,9 +54,9 @@ class StartApp
             self.helpmenu
         elsif uimostimportant == "C"
             puts "Please enter your name."
-            change_user_name = gets.chomp.upcase!
+            change_user_name = gets.chomp
+            change_user_name.upcase!
             UserProfiles.change_users(change_user_name)
-            puts "user has been changed to #{StartApp.current_user}"
             self.mainmenu
         else
             puts "This is not a valid choice."
@@ -75,7 +80,7 @@ class StartApp
             puts "On the main menu, press C to change users."
             self.helpmenu
         elsif  uineedshelp == 4
-            puts "On most pages, you can press\m H - to access the Help menu    M - to access the Main menu\nC - to change heroes    esc - to quit the program."
+            puts "On most pages, you can press\m H - to access the Help menu    M - to access the Main menu\nC - to change heroes    ctrl + c - to quit the program."
             puts "If you are unable to do one of the above, please continue with the prompts on the screen."
             self.helpmenu
         elsif uineedshelp == 5

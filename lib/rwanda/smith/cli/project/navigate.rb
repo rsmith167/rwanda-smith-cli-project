@@ -17,10 +17,14 @@ class Navigate
         x = []
         x = WebsiteScraper.role_or_aff_list(@@first_choice)
         puts "The #{@@first_choice}s are #{x}"
-        x.each_with_index {|v,i| 
-            role_or_aff_list[i] = v
-            puts "Press #{i + 1} for #{v}"
-        }
+        if x.length != 0
+            x.each_with_index {|v,i| 
+                role_or_aff_list[i] = v
+                puts "Press #{i + 1} for #{v}"
+            }
+        else
+            puts "An erro occured; please restart the app."
+        end
         uichoseroles = ""
         uichoseroles = gets.chomp
         uichoseroles.upcase!
@@ -28,11 +32,14 @@ class Navigate
             StartApp.mainmenu
         elsif uichoseroles == "H"
             StartApp.helpmenu
-        elsif ("A".."Z").include?(uichoseroles)
-            puts "This is not a valid option"
-            self.StartApp(@@first_choice)
+        # elsif ("A".."Z").include?(uichoseroles)
+        #     puts "This is not a valid option"
+        #     self.start(@@first_choice)
         elsif @@first_choice == "role" || "affiliation"
             self.choosebasedon(role_or_aff_list[uichoseroles.to_i - 1])
+        else
+             puts "This is not a valid option"
+             self.start(@@first_choice)
         end
     end
     def self.choosebasedon(role_or_aff)

@@ -4,18 +4,28 @@ class UserProfiles
     attr_reader :your_hero_list, :name #just a reader macro, you can't change your name at all
     def initialize(name)
         if !@@all_users.include?(name)
-                @name  = name
+                @name  = name.upcase
                 @your_hero_list = []
                 @@all_users << self  
-                StartApp.current_user = @name
+                StartApp.current_user = self
         else 
             puts "Name already taken."  
             return "Fail"
         end
     end
-    def change_users(not_current_user)
-        now_current_user = not_current_user
-        StartApp.current_user = now_current_user
+    def self.change_users(not_current_user)
+        if StartApp.current_user == not_current_user
+            puts "You are already the active user."
+        elsif !self.all_users.include?(not_current_user)
+            self.new(not_current_user)
+            now_current_user = not_current_user
+            StartApp.current_user = now_current_user  
+            puts "A new profile has been created for you and the current user is now #{StartApp.current_user}"
+        elsif (StartApp.current_user != not_current_user) && self.all_users.include?(not_current_user)
+                now_current_user = not_current_user
+                StartApp.current_user = now_current_user        
+                puts "user has been changed to #{StartApp.current_user}"
+        end
     end
     def save_a_hero(hero_name)
         @your_hero_list << hero_name
