@@ -12,6 +12,9 @@ This application is designed to help you figure out which hero you should start 
 You can begin the app with 'ruby startapp.rb'
 
 ##Author
-* **Rwanda Smith** *
+* **Rwanda Smith** 
 https://github.com/rsmith167/rwanda-smith-cli-project
+
+##License
+The gem is available as open source under the terms of the MIT License.
 
