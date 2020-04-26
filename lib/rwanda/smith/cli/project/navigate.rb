@@ -83,10 +83,11 @@ class Navigate
         end
     end
     def self.save_hero(choice)
-        user = StartApp.current_user
-        y = UserProfiles.all_users.index(user)
-        current_profile = UserProfiles.all_users[y]
-        current_profile.save_a_hero(choice)
+        #user = StartApp.current_user
+        #y = UserProfiles.all_users.index(user)
+        #current_profile = UserProfiles.all_users[y]
+        #current_profile.save_a_hero(choice)
+        StartApp.current_user.save_a_hero(choice)
         puts "M - Main Menu    V - View Your Heroes"
         uisavehero = ""
         uisavehero = gets.chomp
@@ -94,9 +95,9 @@ class Navigate
         if uisavehero == "M"
             StartApp.mainmenu
         elsif uisavehero == "V"
-            current_profile.view_your_list
+            StartApp.current_user.view_your_list
         else 
-            Puts "Not a valid choice."
+            puts "Not a valid choice."
             self.save_hero(choice, user)
         end        
     end

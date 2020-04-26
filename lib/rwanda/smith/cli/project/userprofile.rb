@@ -4,7 +4,7 @@ class UserProfiles
     attr_reader :your_hero_list, :name #just a reader macro, you can't change your name at all
     def initialize(name)
         if !@@all_users.include?(name)
-                @name  = name.upcase
+                @name = name
                 @your_hero_list = []
                 @@all_users << self  
                 StartApp.current_user = self
@@ -14,17 +14,16 @@ class UserProfiles
         end
     end
     def self.change_users(not_current_user)
-        if StartApp.current_user == not_current_user
+        if StartApp.current_user.name == not_current_user
             puts "You are already the active user."
-        elsif !self.all_users.include?(not_current_user)
-            self.new(not_current_user)
-            now_current_user = not_current_user
-            StartApp.current_user = now_current_user  
-            puts "A new profile has been created for you and the current user is now #{StartApp.current_user}"
-        elsif (StartApp.current_user != not_current_user) && self.all_users.include?(not_current_user)
-                now_current_user = not_current_user
-                StartApp.current_user = now_current_user        
-                puts "user has been changed to #{StartApp.current_user}"
+        else
+            if  self.all_users.any? {|user| user.name == not_current_user}
+                StartApp.current_user = self.all_users.find { |user| user.name == not_current_user}
+                puts "user has been changed to #{StartApp.current_user.name}"
+            else
+                StartApp.current_user = self.new(not_current_user)  
+                puts "A new profile has been created for you and the current user is now #{StartApp.current_user.name}"
+             end
         end
     end
     def save_a_hero(hero_name)
@@ -36,7 +35,7 @@ class UserProfiles
     def view_your_list
         hero_details = {1 => "role", 2 => "name", 3 => "occupation", 4 => "base", 5 => "affiliation", 6 => "description", 7 => "bio"}
         hero_index = {}
-        StartApp.current_user.your_hero_list.each_with_index{|hero_name, index|
+        @your_hero_list.each_with_index{|hero_name, index|
             hero_index[index] = hero_name
             puts "Press #{index+1} to select #{hero_name}"}
         uiuserlist = ""

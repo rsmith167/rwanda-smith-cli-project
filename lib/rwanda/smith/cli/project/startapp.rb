@@ -1,8 +1,7 @@
-
 require_relative './navigate.rb'
 require_relative './userprofile.rb'
 require_relative './WebsiteScraper.rb'
-
+#add to list of input, if input == ""
 class StartApp
     @@current_user = ""
     def self.current_user=(current_user)
@@ -15,31 +14,34 @@ class StartApp
         puts "Greetings\! Welcome to \'Find Your First Hero\'.\nSo, you just bought Overwatch and aren\'t sure which hero to choose for your first match.\nNo problem.\nThis app is designed to help narrow down the myriad of choices Overwatch offers.\n"
         Navigate.new
         puts "Loading data...Please wait 30 seconds"
-        #WebsiteScraper.new  
+        WebsiteScraper.new  
         self.class.create_account
     end
     def self.create_account
         puts "What is your name?"
         your_name = gets.chomp
         your_name.upcase!
-        if UserProfiles.new(your_name) == "Fail"
-            puts "If you already have an account, please enter your name. If you do not have an account, press 1."
-            answer = gets.chomp
-            answer.upcase!
-            if answer.to_i == 1
-                self.create_account
-            elsif UserProfiles.all_users.include?(answer)
-                self.current_user = answer
-                self.mainmenu
-            else
-                puts "What you typed in is still invalid. Please try again. Your name is not case sensitive, but it must be spelled correctly"
-                self.create_account
-            end
-        else
-           your_name = UserProfiles.new(your_name)
+        #I need a save to hard drive function for this to work
+        # if UserProfiles.new(your_name) == "Fail"
+        #     puts "If you already have an account, please enter your name. If you do not have an account, press 1."
+        #     answer = gets.chomp
+        #     answer.upcase!
+        #     if answer.to_i == 1
+        #         self.create_account
+        #     elsif UserProfiles.all_users.include?(answer)
+        #         self.current_user = answer
+        #         self.mainmenu
+        #     else
+        #         puts "What you typed in is still invalid. Please try again. Your name is not case sensitive, but it must be spelled correctly"
+        #         self.create_account
+        #     end
+        # else
+           UserProfiles.new(your_name)
            self.mainmenu
-        end
+        #end
     end
+    #add view heroes from main menu
+
     def self.mainmenu
         puts "What is the most important thing to you in a hero?\nPlease type in the corrsponding letter and hit enter:"
         puts "R - Role    A - Affiliation    H - Help    C - Change user"
